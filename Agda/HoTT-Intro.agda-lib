@@ -1,3 +1,4 @@
 name: HoTT-Intro
 include: .
+  univalent-hott
 depend:
