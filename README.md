@@ -58,3 +58,13 @@ To compile the notes, run `latexmk -pdf hott-intro.tex`.
 
 
 [1]: http://www.andrew.cmu.edu/user/erijke/hott/
+
+# Personal Notes -- How Agda isn't Haskell
+
+1. Spacing matters: `A: UU i` is different from `A : UU i`. Generally,
+   just put spaces (parenthesis and braces seem not need spaces).
+1. `{}` are like the bits before `=>` in Haskell.
+1. No type inference. (Or just don't use it TBH.)
+1. `_` seems to have a special meaning and shouldn't be part of a name,
+   but `-` can be in names.
+1. `\to` does not an `→` make.
