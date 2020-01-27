@@ -300,7 +300,7 @@ Mac-Lane-pentagon refl refl refl refl = refl
 {- The following code is an experiment that shows that constructions in an
    abstract environment do remember the specific definitions of previous
    definitions in abstract environments. -}
-   
+
 abstract
   abstract-concat :
     {l : Level} {A : UU l} {x y z : A} → Id x y → Id y z → Id x z
@@ -320,7 +320,7 @@ abstract
     {l : Level} {A : UU l} {x y : A} (p : Id x y) →
       Id (abstract-concat p refl) p
   abstract-right-unit-law refl = refl
-  
+
   {- The term refl should not be accepted if the definition of abstract-concat
      were forgotten. A definition that would work under all circumstances is
      abstract-left-unit refl. -}
@@ -335,7 +335,7 @@ abstract
   left-inverse-pred-ℤ (inr (inl star)) = refl
   left-inverse-pred-ℤ (inr (inr zero-ℕ)) = refl
   left-inverse-pred-ℤ (inr (inr (succ-ℕ x))) = refl
-  
+
   right-inverse-pred-ℤ :
     (k : ℤ) → Id (succ-ℤ (pred-ℤ k)) k
   right-inverse-pred-ℤ (inl zero-ℕ) = refl
@@ -344,14 +344,14 @@ abstract
   right-inverse-pred-ℤ (inr (inr zero-ℕ)) = refl
   right-inverse-pred-ℤ (inr (inr (succ-ℕ x))) = refl
 
-{- Exercise 6.12 (a) simply asks to prove the unit laws. The left unit law 
+{- Exercise 6.12 (a) simply asks to prove the unit laws. The left unit law
    holds by judgmental equality. -}
 
 abstract
   left-unit-law-add-ℤ :
     (k : ℤ) → Id (add-ℤ zero-ℤ k) k
   left-unit-law-add-ℤ k = refl
-  
+
   right-unit-law-add-ℤ :
     (k : ℤ) → Id (add-ℤ k zero-ℤ) k
   right-unit-law-add-ℤ (inl zero-ℕ) = refl

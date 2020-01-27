@@ -40,5 +40,14 @@ exercise-1-13 :
   → ¬ (¬ (coprod A (¬ A))
 exercise-1-13 = (\ f → f (ind-empty x)) -}
 
--- Yare, yare
--- exercise-1-15
+kian-ex-1-13 :
+  {i : Level} {A : UU i}
+  → ¬ (¬ (coprod A (¬ A)))
+kian-ex-1-13 = (\ f → (\ g → f (inr g)) (\ a → f (inl a)))
+
+import 05-identity-types
+open 05-identity-types public
+
+exercise-1-15 :
+  {i j : Level} {A : UU i} (C : A → UU j) (x : A) (y : A) → (Id x y) → (C x) → (C y)
+exercise-1-15 C x y eq = ind-Id x (\ y' eq' → (C(x) → C(y'))) (\ x → x) y eq
