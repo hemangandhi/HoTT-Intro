@@ -34,12 +34,6 @@ exercise-1-12-iii :
 exercise-1-12-iii (inl fa) = (\ p → fa (pr1 p))
 exercise-1-12-iii (inr fb) = (\ p → fb (pr2 p))
 
-{- Not sure how to actually say this:
-exercise-1-13 :
-  {i : Level} {A : UU i} {x: empty}
-  → ¬ (¬ (coprod A (¬ A))
-exercise-1-13 = (\ f → f (ind-empty x)) -}
-
 kian-ex-1-13 :
   {i : Level} {A : UU i}
   → ¬ (¬ (coprod A (¬ A)))
