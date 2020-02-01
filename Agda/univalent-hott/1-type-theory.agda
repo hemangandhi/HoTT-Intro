@@ -1,5 +1,3 @@
-{-# OPTIONS --without-K --exact-split #-}
-
 module 1-type-theory where
 
 import 00-preamble

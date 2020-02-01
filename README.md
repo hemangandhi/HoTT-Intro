@@ -68,3 +68,4 @@ To compile the notes, run `latexmk -pdf hott-intro.tex`.
 1. `_` seems to have a special meaning and shouldn't be part of a name,
    but `-` can be in names.
 1. `\to` does not an `→` make.
+1. The parameters on the left and right of a `:` in a `data` declaration are all parameters (except things in `{}` as above)
