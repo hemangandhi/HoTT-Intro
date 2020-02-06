@@ -50,3 +50,29 @@ lemma-2-3-11 :
   (x y : A) (f : (z : A) → P z → Q z) (u : P x) → (p : Id x y)
   → Id (tr Q p (f x u)) (f y (tr P p u))
 lemma-2-3-11 x y f u refl = refl
+
+-- Eckert-Hamilton
+
+-- First, the loop
+loop-type : {i : Level} {A : UU i} (x : A) → UU i
+loop-type x = Id x x
+
+order-2-star : 
+  {i : Level} {A : UU i} (a b c : A) → (p q : Id a b) → (r s : Id b c)
+   → (alpha : Id p q) → (beta : Id r s) → Id (concat p c r) (concat q c s)
+order-2-star a b c refl q refl s refl refl = refl
+
+left-whisker :
+  {i : Level} {A : UU i} (a b c : A) → (p q : Id a b) → (r : Id b c)
+   → (alpha : Id p q) → Id (concat p c r) (concat q c r)
+left-whisker a b c refl refl r refl = refl
+
+right-whisker :
+  {i : Level} {A : UU i} (a b c : A) → (p : Id a b) → (r s : Id b c)
+   → (beta : Id r s) → Id (concat p c r) (concat p c s)
+right-whisker a b c p refl refl refl = refl
+   
+eckert-hamilton :
+  {i : Level} {A : UU i} (a b c : A) → (p q : Id a b) → (r s : Id b c)
+  → (alpha : Id p q) → (beta : Id r s) → (l : Id a b) → Id (concat alpha l beta) (concat beta l alpha)
+eckert-hamilton a b c refl refl refl refl refl refl refl = refl
