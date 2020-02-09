@@ -1,6 +1,6 @@
 \section{More inductive types}
 
-Analogous to the type of natural numbers, many types can be specified as inductive types. In this lecture we introduce some further examples of inductive types: the unit type, the empty type, the booleans, coproducts, dependent pair types, and cartesian products. We also introduce the type of integers.
+Analogous to the type of natural numbers, many types can be specified as inductive types. In this section we introduce some further examples of inductive types: the unit type, the empty type, the booleans, coproducts, dependent pair types, and cartesian products. We also introduce the type of integers.
 
 \subsection{The idea of general inductive types}
 
@@ -182,8 +182,8 @@ In the following lemma we derive an induction principle\index{induction principl
     p_{-1} & :P(-1_\Z) \\
     p_{-S} & : \prd{n:\N}P(\inneg(n))\to P(\inneg(\succN(n)))\\
     p_{0} & : P(0_\Z) \\
-    P_{1} & : P(1_\Z) \\
-    P_{S} & : \prd{n:\N}P(\inpos(n))\to P(\inpos(\succN(n))),
+    p_{1} & : P(1_\Z) \\
+    p_{S} & : \prd{n:\N}P(\inpos(n))\to P(\inpos(\succN(n))),
   \end{align*}
   then we can construct a dependent function $f:\prd{k:\Z}P(k)$ for which the following judgmental equalities hold:\index{integers!computation rules}\index{computation rules!of Z@{of $\Z$}}
   \begin{align*}
@@ -320,10 +320,17 @@ The projection maps are defined similarly to the projection maps of $\Sigma$-typ
   \item An elimination rule.
   \item Computation rules.
   \end{enumerate}
-\exercise Let $A$ be a type.\label{ex:dne-dec}
+  \exercise Let $P$ and $Q$ be types. Use the fact that $\neg P$\index{negation} is defined as the type $P\to\emptyt$ of functions from $P$ to the empty type\index{empty type}, to give type theoretic proofs of the following taugologies\index{tautologies} of constructive logic\index{constructive logic}.\label{ex:dne-dec}
   \begin{subexenum}
-  \item Show that $(A+\neg A)\to(\neg\neg A\to A)$.
-  \item Show that $\neg\neg\neg A \to \neg A$.
+  \item $P\to\neg\neg P$
+  \item $(P\to Q)\to(\neg\neg P\to\neg\neg Q)$
+  \item $(P+\neg P)\to(\neg\neg P\to P)$
+  \item $\neg\neg(P+\neg P)$
+  \item $\neg\neg(\neg\neg P \to P)$
+  \item $(P\to \neg\neg Q)\to (\neg\neg P \to\neg\neg Q)$
+  \item $\neg\neg\neg P \to \neg P$
+  \item $\neg\neg(P \to \neg\neg Q)\to (P\to\neg\neg Q)$
+  \item $\neg\neg((\neg\neg P)\times(\neg\neg Q))\to (\neg\neg P)\times(\neg\neg Q)$
   \end{subexenum}
 \exercise \label{ex:boolean-operation}Define the following operations of Boolean algebra:\index{boolean algebra}\index{booleans!exclusive disjunction}\index{booleans!implication}\index{booleans!if and only if}\index{booleans!Peirce's arrow}\index{booleans!Sheffer stroke}
   \begin{center}
