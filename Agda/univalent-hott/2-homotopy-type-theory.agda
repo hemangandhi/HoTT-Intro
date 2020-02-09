@@ -71,8 +71,40 @@ right-whisker :
   {i : Level} {A : UU i} (a b c : A) → (p : Id a b) → (r s : Id b c)
    → (beta : Id r s) → Id (concat p c r) (concat p c s)
 right-whisker a b c p refl refl refl = refl
-   
-eckert-hamilton :
-  {i : Level} {A : UU i} (a b c : A) → (p q : Id a b) → (r s : Id b c)
-  → (alpha : Id p q) → (beta : Id r s) → (l : Id a b) → Id (concat alpha l beta) (concat beta l alpha)
-eckert-hamilton a b c refl refl refl refl refl refl refl = refl
+
+-- TODO: Eckmann Hilton
+
+-- 2.4: the equivalence of functions, quasi-inverses
+
+data Fn-Equiv {i j : Level} (A : UU i) (B : UU j) (f g : A → B) : UU (i ⊔ j) where
+  Sim-By : ((x : A) → (Id (f x) (g x))) → Fn-Equiv A B f g
+
+-- 2.6.1
+product-functoriality :
+  {i j : Level} {A : UU i} {B : UU j} (x y : prod A B) → (Id x y)
+  → (prod (Id (pr1 x) (pr1 y)) (Id (pr2 x) (pr2 y)))
+product-functoriality x y refl = pair refl refl
+
+thm-2-6-2 :
+  {i j : Level} {A : UU i} {B : UU j} (a₁ a₂ : A) → (b₁ b₂ : B)
+  → (prod (Id a₁ a₂) (Id b₁ b₂)) → (Id (pair a₁ b₁) (pair a₂ b₂))
+thm-2-6-2 a₁ a₂ b₁ b₂ (pair refl refl) = refl
+
+-- This is a bit of laziness to exhibit both bits of the proof with the same a₁ etc.
+-- The point is to show that product-functoriality and thm-2-6-2 are quasi-inverses.
+functoriality-is-equiv-to-2-6-2 :
+  {i j : Level} {A : UU i} {B : UU j} {a₁ a₂ : A} {b₁ b₂ : B} →
+  -- First two bindings give us shorthands for the proper invocations of the above
+  -- functions (currying away aₙ and bₙ).
+  let functorial = (product-functoriality (pair a₁ b₁) (pair a₂ b₂))
+      2-6-2 = (thm-2-6-2 a₁ a₂ b₁ b₂)
+      thm-after-funct = (Fn-Equiv (prod (Id a₁ a₂) (Id b₁ b₂))
+                                  (prod (Id a₁ a₂) (Id b₁ b₂))
+                                  (λ x → x)
+                                  (functorial ∘ 2-6-2))
+      funct-after-thm = (Fn-Equiv (Id (pair a₁ b₁) (pair a₂ b₂))
+                                  (Id (pair a₁ b₁) (pair a₂ b₂))
+                                  (2-6-2 ∘ functorial)
+                                  (λ x → x))
+  in (prod thm-after-funct funct-after-thm)
+functoriality-is-equiv-to-2-6-2 = pair (Sim-By (λ {(pair refl refl) → refl})) (Sim-By (λ {refl → refl}))
