@@ -76,6 +76,8 @@ right-whisker a b c p refl refl refl = refl
 
 -- 2.4: the equivalence of functions, quasi-inverses
 
+-- `Sim-By` might be poorly set up since it basically takes the witness of what it
+-- actually should just be. (../07- has the correct stuff.)
 data Fn-Equiv {i j : Level} (A : UU i) (B : UU j) (f g : A → B) : UU (i ⊔ j) where
   Sim-By : ((x : A) → (Id (f x) (g x))) → Fn-Equiv A B f g
 
@@ -85,19 +87,20 @@ product-functoriality :
   → (prod (Id (pr1 x) (pr1 y)) (Id (pr2 x) (pr2 y)))
 product-functoriality x y refl = pair refl refl
 
-thm-2-6-2 :
+-- 2.6.2
+pair= :
   {i j : Level} {A : UU i} {B : UU j} (a₁ a₂ : A) → (b₁ b₂ : B)
   → (prod (Id a₁ a₂) (Id b₁ b₂)) → (Id (pair a₁ b₁) (pair a₂ b₂))
-thm-2-6-2 a₁ a₂ b₁ b₂ (pair refl refl) = refl
+pair= a₁ a₂ b₁ b₂ (pair refl refl) = refl
 
 -- This is a bit of laziness to exhibit both bits of the proof with the same a₁ etc.
--- The point is to show that product-functoriality and thm-2-6-2 are quasi-inverses.
+-- The point is to show that product-functoriality and pair= are quasi-inverses.
 functoriality-is-equiv-to-2-6-2 :
   {i j : Level} {A : UU i} {B : UU j} {a₁ a₂ : A} {b₁ b₂ : B} →
   -- First two bindings give us shorthands for the proper invocations of the above
   -- functions (currying away aₙ and bₙ).
   let functorial = (product-functoriality (pair a₁ b₁) (pair a₂ b₂))
-      2-6-2 = (thm-2-6-2 a₁ a₂ b₁ b₂)
+      2-6-2 = (pair= a₁ a₂ b₁ b₂)
       thm-after-funct = (Fn-Equiv (prod (Id a₁ a₂) (Id b₁ b₂))
                                   (prod (Id a₁ a₂) (Id b₁ b₂))
                                   (λ x → x)
@@ -108,3 +111,19 @@ functoriality-is-equiv-to-2-6-2 :
                                   (λ x → x))
   in (prod thm-after-funct funct-after-thm)
 functoriality-is-equiv-to-2-6-2 = pair (Sim-By (λ {(pair refl refl) → refl})) (Sim-By (λ {refl → refl}))
+
+-- 2.6.4
+pair-transport :
+  {i j k : Level} {Z : UU k} {A : Z → UU i} {B : Z → UU j} (z w : Z) → (p : Id z w) → (x : prod (A z) (B z))
+  → (Id (tr (λ z → (prod (A z) (B z))) p x) (pair (tr A p (pr1 x)) (tr B p (pr2 x))))
+pair-transport z w refl (pair az bz) = refl
+
+-- 2.6.5
+ap-functorial :
+  {i j k l : Level} {A : UU i} {A' : UU j} {B : UU k} {B' : UU l} (g : A → A') → (h : B → B')
+  → (x y : prod A B) → (p : Id (pr1 x) (pr1 y)) → (q : Id (pr2 x) (pr2 y)) →
+  let pf= = (pair= (pr1 x) (pr1 y) (pr2 x) (pr2 y))
+      pgh = (pair= (g (pr1 x)) (g (pr1 y)) (h (pr2 x)) (h (pr2 y)))
+      f = (λ x → pair (g (pr1 x)) (h (pr2 x)))
+  in Id (ap f (pf= (pair p q))) (pgh (pair (ap g p) (ap h q)))
+ap-functorial g h (pair aₓ bₓ) (pair ay by) refl refl = refl
