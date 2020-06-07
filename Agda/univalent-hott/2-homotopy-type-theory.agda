@@ -78,8 +78,17 @@ right-whisker a b c p refl refl refl = refl
 
 -- `Sim-By` might be poorly set up since it basically takes the witness of what it
 -- actually should just be. (../07- has the correct stuff.)
-data Fn-Equiv {i j : Level} (A : UU i) (B : UU j) (f g : A → B) : UU (i ⊔ j) where
-  Sim-By : ((x : A) → (Id (f x) (g x))) → Fn-Equiv A B f g
+data Homotopic-Fn {i j : Level} (A : UU i) (B : UU j) (f g : A → B) : UU (i ⊔ j) where
+  Sim-By : ((x : A) → (Id (f x) (g x))) → Homotopic-Fn A B f g
+
+data Is-Equiv {i j : Level} {A : UU i} {B : UU j} (f : A → B) : UU (i ⊔ j) where
+  With-Qinv : (g : B → A) → (Homotopic-Fn A A (g ∘ f) (λ x → x))
+                          → (Homotopic-Fn B B (f ∘ g) (λ x → x))
+                          → Is-Equiv f
+
+-- Relying on the book's lemma 2.4.12, we're just using the above for type equivalence
+data Equiv-Types {i j : Level} (A : UU i) (B : UU j) : UU (i ⊔ j) where
+  Eq-By : (Σ (A → B) Is-Equiv)  → Equiv-Types A B
 
 -- 2.6.1
 product-functoriality :
@@ -101,11 +110,11 @@ functoriality-is-equiv-to-2-6-2 :
   -- functions (currying away aₙ and bₙ).
   let functorial = (product-functoriality (pair a₁ b₁) (pair a₂ b₂))
       2-6-2 = (pair= a₁ a₂ b₁ b₂)
-      thm-after-funct = (Fn-Equiv (prod (Id a₁ a₂) (Id b₁ b₂))
+      thm-after-funct = (Homotopic-Fn (prod (Id a₁ a₂) (Id b₁ b₂))
                                   (prod (Id a₁ a₂) (Id b₁ b₂))
                                   (λ x → x)
                                   (functorial ∘ 2-6-2))
-      funct-after-thm = (Fn-Equiv (Id (pair a₁ b₁) (pair a₂ b₂))
+      funct-after-thm = (Homotopic-Fn (Id (pair a₁ b₁) (pair a₂ b₂))
                                   (Id (pair a₁ b₁) (pair a₂ b₂))
                                   (2-6-2 ∘ functorial)
                                   (λ x → x))
@@ -127,3 +136,20 @@ ap-functorial :
       f = (λ x → pair (g (pr1 x)) (h (pr2 x)))
   in Id (ap f (pf= (pair p q))) (pgh (pair (ap g p) (ap h q)))
 ap-functorial g h (pair aₓ bₓ) (pair ay by) refl refl = refl
+
+-- 2.9: Extensionality
+happly : {i j : Level} {A : UU i} {B : A → UU j} (f g : (x : A) → B(x)) →
+          (Id f g) → ((x : A) → (Id (f x) (g x)))
+happly f g refl = λ x → refl
+
+postulate fn-ext : Is-Equiv happly
+
+dependent-fn-transport : {i j : Level} {X : UU i} (A : X → UU j) → (B : (x : X) → A x → UU (i ⊔ j))
+                         (x₁ x₂ : X) → (Id x₁ x₂) →
+                         (f : (a : A x₁) → (B x₁ a)) → (A x₂) → ((a : A x₂) → (B x₂ a))
+dependent-fn-transport A B x₁ x₂ refl f a = tr (B-hat B) (pair= x₁ x₂ (tr A refl a) a
+                                                              (pair refl refl))
+                                                      (f (tr A refl a))
+ where
+   B-hat :  {i j : Level} {X : UU i} {A : X → UU j} (B : (x : X) → A x → UU (i ⊔ j)) → (Σ X (λ x → A x)) → UU (i ⊔ j)
+   B-hat B w = B (pr1 w) (pr2 w)
