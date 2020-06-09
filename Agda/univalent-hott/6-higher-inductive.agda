@@ -6,8 +6,11 @@
 open import Agda.Builtin.Cubical.Id
 open import Agda.Builtin.Cubical.Path
 
+-- Other builtins
 open import Agda.Builtin.List
 open import Agda.Builtin.Bool
+
+open import Axiom.Extensionality.Propositional
 
 -- I understand it better calling stuff "UU" from Egbert's notes.
 open import 00-preamble
@@ -44,4 +47,10 @@ cancelList e ((inr a₁) ∷ (inl a₂) ∷ xs) with e a₁ a₂
 ...                                      | false = (inr a₁) ∷ (cancelList e ((inl a₂) ∷ xs))
 cancelList e (x ∷ xs) = x ∷ (cancelList e xs)
 
-
+-- Proof that cancel list is idempotent (done on sets bc why the #$%^ does the built-in
+-- funext need a #$%^ing level as an explicit param?)
+-- Note that oddity 1 from above is relevant -- I'm just going to be lazy and prove for all
+-- equality-like things.
+cancelList-idempotent : {A : UU (lsuc lzero)} (e : A → A → Bool)
+                        → ((λ x → cancelList e (cancelList e x)) ≡ (cancelList e))
+cancelList-idempotent e = Extensionality (lsuc lzero) (lsuc lzero) ?
