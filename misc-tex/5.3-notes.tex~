@@ -1,0 +1,21 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{tikz}
+\usepackage{wrapfig}
+\usepackage[margin=15mm]{geometry}
+
+\begin{document}
+\begin{center}
+\subsection*{Notes on W-types}
+\end{center}
+
+Heman Gandhi
+\hfill
+April 2020\\
+
+\subsubsection*{Plucker Embedding}
+
+
+
+\end{document}

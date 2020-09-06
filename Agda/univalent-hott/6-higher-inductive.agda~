@@ -1,0 +1,11 @@
+{-# OPTIONS --without-K --exact-split --cubical #-}
+
+open import Cubical.Core.Everything
+
+open import 00-preamble
+
+-- https://dl.acm.org/doi/pdf/10.1145/3341691 page 11
+data _/_ {i : Level} (A : UU i) (R : A \r A \r UU i): UU i where
+  [_] : A \r A/R
+  eq : (a b : A) \r (r : R a b) \r [a] \cong [b]
+  trunc : (x y : A/R) \r (p q : x = y) \r p \cong q

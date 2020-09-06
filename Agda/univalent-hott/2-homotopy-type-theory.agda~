@@ -1,0 +1,12 @@
+{-# OPTIONS --without-K --exact-split #-}
+
+import 05-identity-types
+open 05-identity-types public
+
+-- Re-doing proof on inversion with a more general framework:
+-- in particular given: D : {i : Level} {A: UU i} {x y : A} (Id x y) \r- U
+-- we show an instance of (Id y x)
+
+inv :
+  {i : Level} {A : UU i} {x y : A} → Id x y → Id y x
+inv refl = refl

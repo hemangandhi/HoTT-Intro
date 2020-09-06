@@ -53,4 +53,4 @@ cancelList e (x ∷ xs) = x ∷ (cancelList e xs)
 -- equality-like things.
 cancelList-idempotent : {A : UU (lsuc lzero)} (e : A → A → Bool)
                         → ((λ x → cancelList e (cancelList e x)) ≡ (cancelList e))
-cancelList-idempotent e = Extensionality (lsuc lzero) (lsuc lzero) ?
+cancelList-idempotent e = 
